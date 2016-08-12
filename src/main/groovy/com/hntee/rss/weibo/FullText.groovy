@@ -1,8 +1,11 @@
-package com.hntee.rss
+package com.hntee.rss.weibo
 
 import groovy.json.JsonParserType
 import groovyx.net.http.HTTPBuilder
 import groovy.json.JsonSlurper
+
+import java.rmi.RemoteException
+import java.rmi.ServerError
 
 import static groovyx.net.http.ContentType.TEXT
 /**
@@ -17,13 +20,18 @@ class FullText {
                 query:[
                         'uid': uid,
                         'mid': mid
-                ]){ res, rd ->
-            def jsonText = rd.text
+                ]){ response, stream ->
+            def jsonText = stream.text
 
             //Setting the parser type to JsonParserLax
             def parser = new JsonSlurper().setType(JsonParserType.LAX)
             def jsonResp = parser.parseText(jsonText)
-            return jsonResp.msg.toString()
+            try {
+                return jsonResp.msg.toString()
+            } catch (MissingPropertyException e) {
+                System.err << "返回值错误：" << jsonResp
+                throw new RemoteException()
+            }
         }
     }
 
@@ -36,14 +44,14 @@ class FullText {
         if (match.find()) {
             def uid = match[0][1]
             def mid = match[0][2]
-            full = FullText.lookUpFullText(uid, mid)
+            try {
+                full = FullText.lookUpFullText(uid, mid)
+            } catch (RemoteException e) {
+                System.err.println "对方服务器出了问题，获取全文失败"
+                full = text
+            }
         }
-        def result = FullText.clean(full)
-        return result
-    }
-
-    def static clean = { text ->
-        return text.replace("\n\n","").replace("<br/>","").replace("<br />","")
+        return full
     }
 }
 

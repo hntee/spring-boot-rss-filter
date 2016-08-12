@@ -4,38 +4,47 @@ apply plugin: "idea"
 apply plugin: 'spring-boot'
 
 jar {
-	baseName = 'rss-filter'
-	version = '0.0.1-SNAPSHOT'
+    baseName = 'rss-filter'
+    version = '0.0.1-SNAPSHOT'
 }
 
-groovyVersion = '2.4.7'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 repositories {
-	maven {
+    maven {
         url 'http://uk.maven.org/maven2/'
     }
 }
 
 
 buildscript {
-	ext {
-		springBootVersion = '1.4.0.RELEASE'
+    repositories {
+        maven {
+            url 'http://uk.maven.org/maven2/'
+        }
+    }
 
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-	}
+    ext {
+        springBootVersion = '1.4.0.RELEASE'
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
 }
 
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter-groovy-templates')
-	compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-groovy-templates')
+    compile('org.springframework.boot:spring-boot-starter-web')
 
-	compile 'org.codehaus.groovy:groovy-all:${groovyVersion}'
-	compile group: 'org.codehaus.groovy.modules.http-builder', name: 'http-builder', version: '0.7.1'
+    compile 'org.codehaus.groovy:groovy-all:2.4.7'
+    compile group: 'org.codehaus.groovy.modules.http-builder', name: 'http-builder', version: '0.7.1'
+    compile group: 'xalan', name: 'xalan', version: '2.7.1'
 
-	testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+    // https://mvnrepository.com/artifact/org.hamcrest/hamcrest-all
+    testCompile group: 'org.hamcrest', name: 'hamcrest-all', version: '1.3'
+
 }
 
