@@ -1,0 +1,41 @@
+apply plugin: "groovy"
+apply plugin: "application"
+apply plugin: "idea"
+apply plugin: 'spring-boot'
+
+jar {
+	baseName = 'rss-filter'
+	version = '0.0.1-SNAPSHOT'
+}
+
+groovyVersion = '2.4.7'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+	maven {
+        url 'http://uk.maven.org/maven2/'
+    }
+}
+
+
+buildscript {
+	ext {
+		springBootVersion = '1.4.0.RELEASE'
+
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-groovy-templates')
+	compile('org.springframework.boot:spring-boot-starter-web')
+
+	compile 'org.codehaus.groovy:groovy-all:${groovyVersion}'
+	compile group: 'org.codehaus.groovy.modules.http-builder', name: 'http-builder', version: '0.7.1'
+
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
