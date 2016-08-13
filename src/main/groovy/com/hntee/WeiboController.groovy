@@ -1,5 +1,7 @@
 package com.hntee
 
+import com.hntee.rss.pipeline.PipeLine
+import com.hntee.rss.weibo.WeiboRSS
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
@@ -9,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody
  */
 @Controller
 @RequestMapping(value = "/weibo")
-class DemoController {
+class WeiboController {
     @RequestMapping(value = "/")
     def @ResponseBody hello() {
         return "Hello World!"
@@ -18,7 +20,8 @@ class DemoController {
 
     @RequestMapping(value = "{user}")
     def @ResponseBody rss(@PathVariable String user) {
-        def url = "http://rss.weibodangan.com/weibo/rss/${user}/"
-
+        def weiboRSS = new WeiboRSS(user)
+        def pipeLine = new PipeLine(weiboRSS)
+        return pipeLine.toXML()
     }
 }

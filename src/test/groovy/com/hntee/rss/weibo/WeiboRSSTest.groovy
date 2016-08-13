@@ -10,12 +10,8 @@ import static org.hamcrest.Matchers.*
 class WeiboRSSTest extends GroovyTestCase {
     @Test
     void testWeiboRSS() {
-        def rss = new WeiboRSS("1670458304")
-        def titles = rss.items.title.collect { it.toString() }
-        def contents = rss.items.description.collect { it.toString() }
-        assert (titles.size() > 1)
-        assert (contents.size() > 1)
-        assert (titles.size() == contents.size())
-        assert (contents.get(0).size() > 1)
+        def weiboRSS = new WeiboRSS("1670458304")
+        assert (weiboRSS.rss.channel.title.text().contains("神嘛事儿"))
     }
+
 }
