@@ -1,13 +1,7 @@
 package com.hntee.rss.pipeline
 
-import com.hntee.rss.RSS
 import com.hntee.rss.weibo.WeiboRSS
-import org.junit.Before
-import groovy.mock.interceptor.*
 import org.junit.BeforeClass
-
-import static org.hamcrest.MatcherAssert.assertThat
-import static org.hamcrest.Matchers.*
 /**
  * Created by htan on 2016/8/12.
  */
@@ -21,20 +15,6 @@ class PipeLineTest extends GroovyTestCase {
     }
 
     void testFilter() {
-//        def mockWeiboRSS = new MockFor(WeiboRSS, true)
-//        mockWeiboRSS.demand.with {
-//            WeiboRSS() { new Expando([rss: rss]) }
-//        }
-//        mockWeiboRSS.demand.getItems(1..100) { rss.channel.item }
-//
-//        mockWeiboRSS.use {
-//            def mweiboRSS = new WeiboRSS()
-//            PipeLine pipeLine = new PipeLine(mweiboRSS)
-//            def originSize = mweiboRSS.size()
-//            def filteredSize = pipeLine.filter('description','回复').rss.size()
-//  //          assert filteredSize < originSize
-//        }
-
         def pipeLine = new PipeLine(weiboRSS)
         def originSize = pipeLine.rss.size()
         pipeLine.filter('description','回复')
@@ -48,6 +28,18 @@ class PipeLineTest extends GroovyTestCase {
         newWeiboRSS = new WeiboRSS(xmlText, 'text')
         def filteredSize2 = newWeiboRSS.size()
         assert filteredSize2 < filteredSize
+    }
+
+    void testFilterArray() {
+        def pipeLine = new PipeLine(weiboRSS)
+        def originSize = pipeLine.rss.size()
+        String[] toFilter = ["回复","RT"]
+        pipeLine.filter('description',toFilter)
+        def xmlText = pipeLine.toXML()
+        def newWeiboRSS = new WeiboRSS(xmlText, 'text')
+        def filteredSize = newWeiboRSS.size()
+        assert filteredSize == 2
+
     }
 
     void testRemove() {

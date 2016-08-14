@@ -1,10 +1,7 @@
 package com.hntee.rss.pipeline
 
-import com.hntee.rss.RSS
-import com.hntee.rss.weibo.FullText
 import groovy.util.logging.Log
 import groovy.xml.XmlUtil
-
 /**
  * Created by htan on 2016/8/5.
  */
@@ -15,13 +12,23 @@ class PipeLine {
 
     // 过滤包含这些字符串的条目
     def filter(String location, String exclude) {
-        rss.items.findAll {
-            def text = it[location].toString();
-            text.contains(exclude)
-        }.replaceNode {}
-        return this
+        String[] words = [exclude]
+//        rss.items.findAll {
+//            def text = it[location].toString();
+//            text.contains(exclude)
+//        }.replaceNode {}
+        return filter(location, words)
     }
 
+    def filter(String location, String[] excludeWords) {
+        excludeWords.eachWithIndex { word, i ->
+            rss.items.findAll {
+                def text = it[location].toString();
+                text.contains(word)
+            }.replaceNode {}
+        }
+        return this
+    }
     // 去除一些固定的字符串
     def remove(String location, String exclude) {
         return replace(location, exclude, "")

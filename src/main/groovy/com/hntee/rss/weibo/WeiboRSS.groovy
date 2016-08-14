@@ -2,10 +2,6 @@ package com.hntee.rss.weibo
 
 import com.hntee.rss.RSS
 import org.xml.sax.SAXParseException
-
-import java.rmi.ServerError
-import java.rmi.ServerException
-
 /**
  * Created by htan on 2016/8/12.
  */
@@ -33,7 +29,7 @@ class WeiboRSS implements RSS{
             rss = new XmlSlurper().parseText(rssText)
         } catch (SAXParseException e) {
             System.err.println rssText
-            throw new Error("解析错误，因为远程服务器返回的数据有误")
+            throw new Error("解析错误，因为远程服务器返回的数据有误\nURL: ${url}")
         }
         // 获取每一条正文的全文
         items.collect {
@@ -52,6 +48,8 @@ class WeiboRSS implements RSS{
                 break
 
         }
+    }
 
+    def WeiboRSS() {
     }
 }
