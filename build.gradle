@@ -42,6 +42,9 @@ dependencies {
     compile group: 'org.codehaus.groovy.modules.http-builder', name: 'http-builder', version: '0.7.1'
     compile group: 'xalan', name: 'xalan', version: '2.7.1'
 
+    // https://mvnrepository.com/artifact/org.codehaus.gpars/gpars
+    compile group: 'org.codehaus.gpars', name: 'gpars', version: '1.2.1'
+
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile group: 'org.spockframework', name: 'spock-core', version: '1.0-groovy-2.4'
 

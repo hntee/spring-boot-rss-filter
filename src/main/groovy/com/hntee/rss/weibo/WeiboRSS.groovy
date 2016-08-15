@@ -2,6 +2,8 @@ package com.hntee.rss.weibo
 
 import com.hntee.rss.RSS
 import org.xml.sax.SAXParseException
+import static groovyx.gpars.GParsPool.withPool
+
 /**
  * Created by htan on 2016/8/12.
  */
@@ -32,10 +34,13 @@ class WeiboRSS implements RSS{
             throw new Error("解析错误，因为远程服务器返回的数据有误\nURL: ${url}")
         }
         // 获取每一条正文的全文
-        items.collect {
-            it.description = FullText.expand(it.description)
-            return it
+        withPool(10) {
+            items.collectParallel {
+                it.description = FullText.expand(it.description)
+                return it
+            }
         }
+
     }
 
     def WeiboRSS(param,String type) {
