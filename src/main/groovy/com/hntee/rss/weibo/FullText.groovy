@@ -29,7 +29,8 @@ class FullText {
             try {
                 return jsonResp.msg.toString()
             } catch (MissingPropertyException e) {
-                System.err << "返回值错误：" << jsonResp
+                System.err.println  "返回值错误："
+                System.err.println  jsonResp
                 throw new RemoteException()
             }
         }

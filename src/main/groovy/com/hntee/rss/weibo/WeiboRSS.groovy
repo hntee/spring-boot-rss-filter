@@ -32,7 +32,7 @@ class WeiboRSS implements RSS{
             throw new Error("解析错误，因为远程服务器返回的数据有误\nURL: ${url}")
         }
         // 获取每一条正文的全文
-        items.collect {
+        items.collectParallel {
             it.description = FullText.expand(it.description)
             return it
         }

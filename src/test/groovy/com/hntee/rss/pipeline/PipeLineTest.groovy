@@ -51,6 +51,48 @@ class PipeLineTest extends GroovyTestCase {
         assert !xmlText.contains('美元议息')
     }
 
+    void testRemove2() {
+        def pipeLine = new PipeLine(weiboRSS)
+        def originSize = pipeLine.rss.size()
+        pipeLine.remove('description','<br />')
+        pipeLine.remove('title','美元议息')
+        def xmlText = pipeLine.toXML()
+        assert !xmlText.contains('<br />')
+    }
+
+    void testAny() {
+        def pipeLine = new PipeLine(weiboRSS)
+        def originSize = pipeLine.rss.size()
+        def t = ['美元议息','我出门办事'] as String[]
+        pipeLine.any('description',t)
+        def xmlText = pipeLine.toXML()
+        def newWeiboRSS = new WeiboRSS(xmlText, 'text')
+        def filteredSize = newWeiboRSS.size()
+        assert filteredSize == 2
+    }
+
+    void testMust() {
+        def pipeLine = new PipeLine(weiboRSS)
+        def originSize = pipeLine.rss.size()
+        def t = ['美元议息','本段请勿'] as String[]
+        pipeLine.must('description',t)
+        def xmlText = pipeLine.toXML()
+        def newWeiboRSS = new WeiboRSS(xmlText, 'text')
+        def filteredSize = newWeiboRSS.size()
+        assert filteredSize == 1
+    }
+
+    void testMust2() {
+        def pipeLine = new PipeLine(weiboRSS)
+        def originSize = pipeLine.rss.size()
+        def t = ['美元议息','本段请勿','黄小样'] as String[]
+        pipeLine.must('description',t)
+        def xmlText = pipeLine.toXML()
+        def newWeiboRSS = new WeiboRSS(xmlText, 'text')
+        def filteredSize = newWeiboRSS.size()
+        assert filteredSize == 0
+    }
+
     void testReplace() {
         def pipeLine = new PipeLine(weiboRSS)
         def originSize = pipeLine.rss.size()

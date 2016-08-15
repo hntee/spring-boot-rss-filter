@@ -20,13 +20,20 @@ class WeiboController {
 
 
     @RequestMapping(value = "{user}")
-    def @ResponseBody rss(@PathVariable String user, @RequestParam(value = "filter", required = false) String[] filter) {
+    def @ResponseBody rss(@PathVariable String user,
+                          @RequestParam(value = "filter", required = false) String[] filter,
+                          @RequestParam(value = "remove", required = false) String remove,
+                          @RequestParam(value = "must", required = false) String[] must,
+                          @RequestParam(value = "any", required = false) String[] any) {
         def weiboRSS = new WeiboRSS(user)
         def pipeLine = new PipeLine(weiboRSS)
-        if (filter == null) {
-            return pipeLine.toXML()
-        } else {
-            return pipeLine.filter('title', filter).toXML()
-        }
+
+        return pipeLine
+                .filter('title', filter)
+                .remove("description", remove)
+                .must("description", must)
+                .any("description", any)
+                .toXML()
+
     }
 }

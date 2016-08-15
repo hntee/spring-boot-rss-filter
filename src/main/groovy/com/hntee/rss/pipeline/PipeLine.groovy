@@ -10,17 +10,11 @@ import groovy.xml.XmlUtil
 class PipeLine {
     def rss
 
-    // 过滤包含这些字符串的条目
-    def filter(String location, String exclude) {
-        String[] words = [exclude]
-//        rss.items.findAll {
-//            def text = it[location].toString();
-//            text.contains(exclude)
-//        }.replaceNode {}
-        return filter(location, words)
-    }
-
+    // 过滤掉含有以下关键词的内容
     def filter(String location, String[] excludeWords) {
+        if (excludeWords == null)
+            return this
+
         excludeWords.eachWithIndex { word, i ->
             rss.items.findAll {
                 def text = it[location].toString();
@@ -29,6 +23,37 @@ class PipeLine {
         }
         return this
     }
+
+    // 文本中必须含有所有关键词
+    def must(String location, String[] mustWords) {
+        if (mustWords == null)
+            return this
+
+        mustWords.eachWithIndex { word, i ->
+            rss.items.findAll {
+                def text = it[location].toString();
+                !text.contains(word)
+            }.replaceNode {}
+        }
+        return this
+    }
+
+    // 文本中含有任意一个关键词都可纳入
+    def any(String location, String[] anyWords) {
+        if (anyWords == null)
+            return this
+
+        rss.items.findAll {
+            def text = it[location].toString();
+            def satisfied = anyWords.any  {
+                text.contains(it)
+            }
+            !satisfied
+        }.replaceNode {}
+
+        return this
+    }
+
     // 去除一些固定的字符串
     def remove(String location, String exclude) {
         return replace(location, exclude, "")
@@ -36,6 +61,9 @@ class PipeLine {
 
     // 替换一些固定的字符串
     def replace(String location, String exclude, String target) {
+        if (exclude == null)
+            return this
+
         rss.items.collect {
             it[location] = it[location].toString().replace(exclude, target)
             return it
