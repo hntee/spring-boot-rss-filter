@@ -13,13 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody
 @Controller
 @RequestMapping(value = "/weibo")
 class WeiboController {
-    @RequestMapping(value = "/")
-    def @ResponseBody hello() {
-        return "Hello World!"
-    }
-
-
-    @RequestMapping(value = "{user}")
+    @RequestMapping(value = "{user}", produces = "application/xml; charset=utf-8")
     def @ResponseBody rss(@PathVariable String user,
                           @RequestParam(value = "filter", required = false) String[] filter,
                           @RequestParam(value = "remove", required = false) String remove,

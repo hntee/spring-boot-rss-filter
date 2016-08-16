@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody
  */
 @Controller
 class UniversalController {
-    @RequestMapping(value = "/rss")
+    @RequestMapping(value = "/rss", produces = "application/xml; charset=utf-8")
     def @ResponseBody rss(@RequestParam(value = "url") String url,
                           @RequestParam(value = "filter", required = false) String[] filter,
                           @RequestParam(value = "remove", required = false) String remove,

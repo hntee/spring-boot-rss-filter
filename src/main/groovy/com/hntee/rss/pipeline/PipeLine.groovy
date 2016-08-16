@@ -15,7 +15,7 @@ class PipeLine {
         if (excludeWords == null)
             return this
 
-        excludeWords.eachWithIndex { word, i ->
+        excludeWords.each { word ->
             rss.items.findAll {
                 def text = it[location].toString();
                 text.contains(word)
@@ -29,7 +29,7 @@ class PipeLine {
         if (mustWords == null)
             return this
 
-        mustWords.eachWithIndex { word, i ->
+        mustWords.each { word ->
             rss.items.findAll {
                 def text = it[location].toString();
                 !text.contains(word)
@@ -72,7 +72,8 @@ class PipeLine {
     }
 
     def toXML() {
-        def xml = XmlUtil.serialize(rss.rss)
+        // 替换unicode转换之后的乱码, 如&#55357;
+        def xml = XmlUtil.serialize(rss.rss).replaceAll(/&#\d{5};/,"")
         return xml
     }
 
