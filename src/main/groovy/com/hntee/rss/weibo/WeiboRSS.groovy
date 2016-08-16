@@ -40,7 +40,6 @@ class WeiboRSS implements RSS{
                 return it
             }
         }
-
     }
 
     def WeiboRSS(param,String type) {

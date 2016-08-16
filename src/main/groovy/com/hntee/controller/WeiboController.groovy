@@ -1,4 +1,4 @@
-package com.hntee
+package com.hntee.controller
 
 import com.hntee.rss.pipeline.PipeLine
 import com.hntee.rss.weibo.WeiboRSS
