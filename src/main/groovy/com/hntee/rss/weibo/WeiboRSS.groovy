@@ -37,7 +37,7 @@ class WeiboRSS implements RSS{
         withPool(10) {
             items.collectParallel {
                 it.description = FullText.expand(it.description)
-                it.title = it.description
+                it.title = it.description.text()
                 return it
             }
         }
