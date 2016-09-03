@@ -18,7 +18,8 @@ class WeiboController {
                           @RequestParam(value = "filter", required = false) String[] filter,
                           @RequestParam(value = "remove", required = false) String remove,
                           @RequestParam(value = "must", required = false) String[] must,
-                          @RequestParam(value = "any", required = false) String[] any) {
+                          @RequestParam(value = "any", required = false) String[] any,
+                          @RequestParam(value = "moreThan", required = false) int length) {
         def weiboRSS = new WeiboRSS(user)
         def pipeLine = new PipeLine(weiboRSS)
 
@@ -27,6 +28,7 @@ class WeiboController {
                 .remove("description", remove)
                 .must("description", must)
                 .any("description", any)
+                .moreThan("title", length)
                 .toXML()
 
     }

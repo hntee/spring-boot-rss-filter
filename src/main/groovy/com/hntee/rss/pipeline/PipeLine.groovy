@@ -38,6 +38,18 @@ class PipeLine {
         return this
     }
 
+    // 文本必须大于指定字数
+    def moreThan(String location, int length) {
+        if (length == null)
+            return this
+
+        rss.items.findAll {
+            def text = it[location].toString();
+            text.length() < length
+        }.replaceNode {}
+        return this
+    }
+
     // 文本中含有任意一个关键词都可纳入
     def any(String location, String[] anyWords) {
         if (anyWords == null)
