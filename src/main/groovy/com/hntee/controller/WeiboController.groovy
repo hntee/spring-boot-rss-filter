@@ -19,7 +19,7 @@ class WeiboController {
                           @RequestParam(value = "remove", required = false) String remove,
                           @RequestParam(value = "must", required = false) String[] must,
                           @RequestParam(value = "any", required = false) String[] any,
-                          @RequestParam(value = "moreThan", required = false) int length) {
+                          @RequestParam(value = "moreThan", required = false) Integer length) {
         def weiboRSS = new WeiboRSS(user)
         def pipeLine = new PipeLine(weiboRSS)
 

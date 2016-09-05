@@ -39,7 +39,7 @@ class PipeLine {
     }
 
     // 文本必须大于指定字数
-    def moreThan(String location, int length) {
+    def moreThan(String location, Integer length) {
         if (length == null)
             return this
 
